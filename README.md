@@ -1,5 +1,6 @@
 <h2>Installation</h2>
 First thing to do is: <br>
+
 ```
 git clone https://github.com/seppehr-com/sms_proj.git
 ```
