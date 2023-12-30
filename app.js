@@ -20,6 +20,17 @@ fs.readFile("config.json",(err,config_json)=>{
 
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(express.static('public')); 
+  
+  // Automatic HTTPS redirection
+  if(config.ssl_enabled){
+    app.use((req, res, next) => {
+      if (!req.secure) {
+        // Redirect to HTTPS
+        return res.redirect(`https://${req.get('host')}${req.url}`);
+      }
+      next();
+    });
+  }
 
   app.get('/', (req, res) => {
     res.sendFile(__dirname + '/layout/index.html');
