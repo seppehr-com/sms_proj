@@ -47,14 +47,9 @@ fs.readFile("config.json",(err,config_json)=>{
       if(phoneNumber && textMessage){
           smsir.SendBulk(textMessage, [phoneNumber], null, config.sms_ir.line_number)
           .then(result => {
-            if(result.data.status==1){
               //Message result.data.message
               res.sendFile(__dirname + '/layout/successful.html');
-            }
-            else
-              errorHtmlContent = errorHtmlContent.replace('{{error}}', 'Unfortunately, your message could not be sent to the devices!');
-              return res.send(errorHtmlContent);
-          })
+           })
           .catch(error => {
             errorHtmlContent = errorHtmlContent.replace('{{error}}', error);
             return res.send(errorHtmlContent);
