@@ -1,4 +1,12 @@
-Create a "config.json" file on the main directory:
+<h2>Installation</h2>
+First thing to do is:
+```git clone https://github.com/seppehr-com/sms_proj.git```
+
+Then you should install the repositories with this command:
+`npm install`
+
+Then create a "config.json" file on the main directory.
+Your config should be like this:
 
 ```
 {
@@ -15,3 +23,6 @@ Create a "config.json" file on the main directory:
     }
 }
 ```
+
+Finally run this command and enjoy! :D
+`node app.js`
