@@ -28,7 +28,8 @@ Your config should be like this:
     "sms_ir":{
         "api_key":"SMS_TOKEN",
         "line_number":11111111111
-    }
+    },
+    "secret_key":"SECRET_KEY"
 }
 ```
 

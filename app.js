@@ -29,22 +29,28 @@ fs.readFile("config.json",(err,config_json)=>{
   app.post('/send-sms', (req, res) => {
       const phoneNumber = req.body.phoneNumber;
       const textMessage = req.body.textMessage;
+      const secretKey = req.body.secretKey;
 
       //Get error file
       let errorHtmlContent = fs.readFileSync(__dirname + '/layout/error.html', 'utf8');
 
       // Validate phone number format
       if (!isValidPhoneNumber(phoneNumber)) {
-        errorHtmlContent = errorHtmlContent.replace('{{error}}', 'Invalid phone number format');
+        errorHtmlContent = errorHtmlContent.replace('{{error}}', 'Invalid phone number format!');
         return res.send(errorHtmlContent);
       }
       // Validate text message length
       if (textMessage.length > 70) {
-        errorHtmlContent = errorHtmlContent.replace('{{error}}', 'Text message is too long');
+        errorHtmlContent = errorHtmlContent.replace('{{error}}', 'Text message is too long!');
+        return res.send(errorHtmlContent);
+      }
+      // Validate secret key
+      if(secretKey!=config.secret_key){
+        errorHtmlContent = errorHtmlContent.replace('{{error}}', 'Secret key is wrong!');
         return res.send(errorHtmlContent);
       }
 
-      if(phoneNumber && textMessage){
+      if(phoneNumber && textMessage && secretKey){
           smsir.SendBulk(textMessage, [phoneNumber], null, config.sms_ir.line_number)
           .then(result => {
               //Message result.data.message
