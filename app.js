@@ -21,16 +21,6 @@ fs.readFile("config.json",(err,config_json)=>{
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(express.static('public')); 
   
-  // Automatic HTTPS redirection
-  if(config.ssl_enabled){
-    app.use((req, res, next) => {
-      if (!req.secure) {
-        // Redirect to HTTPS
-        return res.redirect(`https://${req.get('host')}${req.url}`);
-      }
-      next();
-    });
-  }
 
   app.get('/', (req, res) => {
     res.sendFile(__dirname + '/layout/index.html');
@@ -67,22 +57,28 @@ fs.readFile("config.json",(err,config_json)=>{
       }
   });
 
-  if(config.ssl_enabled){
+  if (config.ssl_enabled) {
     const options = {
       key: fs.readFileSync(config.ssl_options.key),
       cert: fs.readFileSync(config.ssl_options.cert),
     };
-    
-    // Your routes and middleware setup here
-    
+  
+    // Create an HTTP server for redirection
+    const httpServer = express();
+    httpServer.get('*', (req, res) => {
+      res.redirect(`https://${req.headers.host}${req.url}`);
+    });
+    httpServer.listen(80);
+  
+    // Create an HTTPS server for the main application
     https.createServer(options, app).listen(443, () => {
       console.log(`Server is running on https://${config.domain}`);
     });
-  }
-  else{
+  } else {
     app.listen(config.port, () => {
       console.log(`Server is running at http://${config.domain}:${config.port}`);
     });
   }
+  
 
 })
