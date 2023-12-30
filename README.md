@@ -5,12 +5,14 @@ First thing to do is: <br>
 git clone https://github.com/seppehr-com/sms_proj.git
 ```
 
+<br>
 Then you should install the repositories with this command: <br>
 
 ```
 npm install
 ```
 
+<br>
 Then create a "config.json" file on the main directory.
 Your config should be like this:
 
@@ -30,6 +32,7 @@ Your config should be like this:
 }
 ```
 
+<br>
 Finally run this command and enjoy! :D <br>
 
 ```
