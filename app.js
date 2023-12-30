@@ -1,4 +1,5 @@
 const fs = require("fs")
+const https = require("https")
 const express = require('express');
 const bodyParser = require('body-parser');
 const {Smsir} = require('smsir-js')
@@ -13,8 +14,6 @@ fs.readFile("config.json",(err,config_json)=>{
   const config = JSON.parse(config_json)
 
   const app = express();
-  const domain =config.domain;
-  const port = config.port;
 
   //SMS.ir
   const smsir = new Smsir(config.sms_ir.api_key,config.sms_ir.line_number);
@@ -57,8 +56,22 @@ fs.readFile("config.json",(err,config_json)=>{
       }
   });
 
-  app.listen(port, () => {
-    console.log(`Server is running at http://${domain}:${port}`);
-  });
+  if(config.ssl_enabled){
+    const options = {
+      key: fs.readFileSync(config.ssl_options.key),
+      cert: fs.readFileSync(config.ssl_options.cert),
+    };
+    
+    // Your routes and middleware setup here
+    
+    https.createServer(options, app).listen(443, () => {
+      console.log(`Server is running on https://${config.domain}`);
+    });
+  }
+  else{
+    app.listen(config.port, () => {
+      console.log(`Server is running at http://${config.domain}:${config.port}`);
+    });
+  }
 
 })
