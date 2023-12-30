@@ -3,7 +3,10 @@ First thing to do is:
 ```git clone https://github.com/seppehr-com/sms_proj.git```
 
 Then you should install the repositories with this command: <br>
-`npm install`
+
+```
+npm install
+```
 
 Then create a "config.json" file on the main directory.
 Your config should be like this:
@@ -25,4 +28,7 @@ Your config should be like this:
 ```
 
 Finally run this command and enjoy! :D <br>
-`node app.js`
+
+```
+node app.js
+```
